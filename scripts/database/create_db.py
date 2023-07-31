@@ -1,12 +1,17 @@
+import logging
 import sqlite3
+
 from pathlib import Path
 
 
+logging.basicConfig(format='[%(asctime)s] - %(message)s', datefmt='%d-%b-%y %H:%M:%S', level=logging.INFO)
+
 # Create database path and create directory if it doesn't exist
-DATABASE_PATH = Path("./data/processed/covid-blame.db")
+DATABASE_PATH = Path("data/processed/covid-blame.db")
 DATABASE_PATH.parent.mkdir(parents=True, exist_ok=True)
 
 # Create the SQLite file
+logging.info("Connecting to database")
 conn = sqlite3.connect(DATABASE_PATH)
 cursor = conn.cursor()
 
@@ -34,6 +39,7 @@ try:
                         random_values INTEGER
                     )
                 ''')
+    logging.info("Created articles table")
 
     # Create comments table
     cursor.execute('''
@@ -51,9 +57,12 @@ try:
                         FOREIGN KEY (article_id) REFERENCES articles (article_id)
                     )
                 ''')
+    logging.info("Created comments table")
+
 except sqlite3.OperationalError as e:
-    print(f"Error: {e}") 
+    logging.error(f"Error: {e}") 
 
 # Save the changes to the file
 conn.commit()
 conn.close()
+logging.info("Saved database")
