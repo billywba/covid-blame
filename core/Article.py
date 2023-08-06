@@ -6,15 +6,17 @@ from pathlib import Path
 from core.BBCCommentExtractor import BBCCommentExtractor
 from core.DailyMailCommentExtractor import DailyMailCommentExtractor
 from core.GuardianCommentExtractor import GuardianCommentExtractor
+from core.FacebookCommentExtractor import FacebookCommentExtractor
 
 
 class Article:
-    def __init__(self, article_id, headline, date, outlet, article_url):
+    def __init__(self, article_id, headline, date, outlet, article_url, facebook_url):
         self.article_id = article_id
         self.headline = headline
         self.date = date
         self.outlet = outlet
         self.article_url = article_url
+        self.facebook_url = facebook_url
 
         self.comments_df = {}
 
@@ -25,6 +27,14 @@ class Article:
         """
         comment_extractor = self.__get_comment_extractor()
         self.comments_df = comment_extractor.extract_comments_from_original_article_url(self.article_url)
+    
+    
+    def extract_facebook_comments(self):
+        """
+        Extract the Facebook comments from the article
+        """
+        comment_extractor = FacebookCommentExtractor()
+        self.comments_df = comment_extractor.extract_comments_from_post(self.facebook_url)
 
 
     def save_comments_to_csv(self, folder):

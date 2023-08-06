@@ -29,7 +29,8 @@ def load_articles_from_spreadsheet(spreadsheet_path, TARGET_SHEET_NAME):
                                 row['Headline'],
                                 row['Date'],
                                 row['Outlet'],
-                                row['Article URL']
+                                row['Article URL'],
+                                row['Facebook URL']
                                 ))
         
     return articles
@@ -40,10 +41,12 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Extract comments from an Article ID.")
     parser.add_argument("outlet", type=str, help="The name of the news outlet to extract from")
     parser.add_argument("article_id", type=int, help="The Article ID of the article to extract comments from")
+    parser.add_argument("facebook", type=bool, help="Extract Facebook comments instead of article comments")
     args = parser.parse_args()
 
     target_article_id = args.article_id
     TARGET_SHEET_NAME = SPREADSHEET_SHEETS[args.outlet]
+    extract_facebook = args.facebook
 
 
     # Setup logging
@@ -64,7 +67,13 @@ if __name__ == "__main__":
     for article in articles:
         if article.article_id == target_article_id:
             logging.info("Found target article %s" % target_article_id)
-            article.extract_comments()
-            article.save_comments_to_csv(folder=args.outlet)
+
+            if extract_facebook:
+                article.extract_facebook_comments()
+                article.save_comments_to_csv(folder="facebook")
+            else:
+                article.extract_comments()
+                article.save_comments_to_csv(folder=args.outlet)
+
     
     logging.info("Processed articles")

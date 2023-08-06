@@ -29,14 +29,16 @@ class DailyMailCommentExtractor():
 
             # Extract the data needed
             extracted_comment = {
-                        'comment_id': comment_id_index, 
-                        'parent_comment_id': "", 
-                        'comment': comment['message'],
-                        'author_city': author_city,
-                        'author_country': author_country,
-                        'likes': str((comment['voteRating'] + comment['voteCount']) / 2)[:-2], 
-                        'dislikes': str(abs((comment['voteRating'] - comment['voteCount']) / 2))[:-2]
-                    }
+                                    'comment_id': comment_id_index, 
+                                    'parent_comment_id': "", 
+                                    'comment': comment['message'],
+                                    'author_city': author_city,
+                                    'author_country': author_country,
+                                    'likes': str((comment['voteRating'] + comment['voteCount']) / 2)[:-2], 
+                                    'dislikes': str(abs((comment['voteRating'] - comment['voteCount']) / 2))[:-2]
+                                }
+            
+            # Add new comment to the dataframe
             comments_df = pd.concat([comments_df, pd.DataFrame([extracted_comment])], ignore_index=True)
 
             # Update comment_id_index as a comment has been added to the dataframe
@@ -56,6 +58,8 @@ class DailyMailCommentExtractor():
                             "likes": str((reply['voteRating'] + reply['voteCount']) / 2)[:-2], 
                             "dislikes": str(abs((reply['voteRating'] - reply['voteCount']) / 2))[:-2]
                         }
+                
+                # Add new reply to the dataframe
                 comments_df = pd.concat([comments_df, pd.DataFrame([extracted_reply])], ignore_index=True)
                 
                 # Update comment_id_index as a reply has been added to the dataframe
