@@ -38,8 +38,8 @@ def load_articles_from_spreadsheet(spreadsheet_path, TARGET_SHEET_NAME):
 if __name__ == "__main__":
     # Get the Article ID to extract comments from
     parser = argparse.ArgumentParser(description="Extract comments from an Article ID.")
-    parser.add_argument("article_id", type=int, help="The Article ID of the article to extract comments from")
     parser.add_argument("outlet", type=str, help="The name of the news outlet to extract from")
+    parser.add_argument("article_id", type=int, help="The Article ID of the article to extract comments from")
     args = parser.parse_args()
 
     target_article_id = args.article_id

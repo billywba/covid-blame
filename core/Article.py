@@ -5,6 +5,7 @@ from pathlib import Path
 
 from core.BBCCommentExtractor import BBCCommentExtractor
 from core.DailyMailCommentExtractor import DailyMailCommentExtractor
+from core.GuardianCommentExtractor import GuardianCommentExtractor
 
 
 class Article:
@@ -50,3 +51,5 @@ class Article:
             return DailyMailCommentExtractor()
         elif "www.bbc.co.uk" in self.article_url or "www.bbc.com" in self.article_url:
             return BBCCommentExtractor()
+        elif "www.theguardian.com" in self.article_url:
+            return GuardianCommentExtractor()
