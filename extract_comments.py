@@ -41,7 +41,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Extract comments from an Article ID.")
     parser.add_argument("outlet", type=str, help="The name of the news outlet to extract from")
     parser.add_argument("article_id", type=int, help="The Article ID of the article to extract comments from")
-    parser.add_argument("facebook", type=bool, help="Extract Facebook comments instead of article comments")
+    parser.add_argument("--facebook", action="store_true", default=False, help="Extract Facebook comments instead of article comments")
     args = parser.parse_args()
 
     target_article_id = args.article_id
@@ -68,7 +68,7 @@ if __name__ == "__main__":
         if article.article_id == target_article_id:
             logging.info("Found target article %s" % target_article_id)
 
-            if extract_facebook:
+            if extract_facebook == True:
                 article.extract_facebook_comments()
                 article.save_comments_to_csv(folder="facebook")
             else:

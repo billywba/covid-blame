@@ -46,8 +46,8 @@ try:
                     CREATE TABLE comments
                     (
                         comment_id INTEGER PRIMARY KEY,
-                        article_id INTEGER,
                         parent_comment_id INTEGER,
+                        article_id INTEGER,
                         comment TEXT,
                         author_city TEXT,
                         author_country TEXT,
